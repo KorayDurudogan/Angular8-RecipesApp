@@ -1,0 +1,11 @@
+<div class="card">
+    <div class="card-header">
+        {{recipe.name}}
+    </div>
+    <div class="card-body">
+        <img src="{{recipe.image_path}}">
+        <h5 class="card-title">{{recipe.description}}</h5>
+        <p class="card-text">{{recipe.directions[0] | shorten: 100}}</p>
+        <a [routerLink]="[recipe.id]" class="btn btn-primary">See Recipe</a>
+    </div>
+</div>

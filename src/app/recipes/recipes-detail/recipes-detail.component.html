@@ -1,0 +1,13 @@
+<div class="row" style="border: solid #f8f9fa">
+  <div class="col-md-8">
+    <h3>{{recipe.name}}</h3>
+    <label>{{recipe.description}}</label>
+    <hr>
+    <app-directions [directions]="recipe.directions"></app-directions>
+    <hr>
+    <app-ingredients [ingredients]="recipe.ingredients"></app-ingredients>
+  </div>
+  <div class="col-md-4" style="padding: 0 0 0 0;">
+    <img [src]="recipe.image_path" />
+  </div>
+</div>
