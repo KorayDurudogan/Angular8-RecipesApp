@@ -1,0 +1,75 @@
+<form [formGroup]="newRecipeForm" (ngSubmit)="submitRecipe()">
+
+    <div class="row">
+        <div class="col-md-8">
+            <div formGroupName="recipeNameContainer">
+                <b>Name</b>
+                <span style="color: red; display: inline-block;">*</span>
+                <input formControlName="recipeName" class="form-control" style="display: inline-block;"
+                    [ngClass]="{'form-group':true, 'has-error': !newRecipeForm.get('recipeNameContainer.recipeName').valid && newRecipeForm.get('recipeNameContainer.recipeName').touched}">
+
+                <div *ngIf="!newRecipeForm.get('recipeNameContainer.recipeName').valid && newRecipeForm.get('recipeNameContainer.recipeName').touched"
+                    class="alert alert-danger" role="alert">
+                    Please enter recipe name.
+                </div>
+            </div>
+            <hr>
+
+            <div formGroupName="recipeDescriptionContainer">
+                <b>Description</b>
+                <textarea formControlName="recipeDescription" class="form-control" rows="4"></textarea>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div>
+                <img [src]="newRecipeForm.get('recipeImagePath.imagePath').value" style="width:200px; height:200px"
+                    class="img-responsive" />
+            </div>
+            <div formGroupName="recipeImagePath" style="margin-top: 10px;">
+                <input type="text" formControlName="imagePath" class="form-control">
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <b>Directions</b>
+    <span style="color: red; display: inline-block;">*</span>
+    <div formArrayName="directionsArray" class="form-group">
+        <div *ngFor="let step of newRecipeForm.get('directionsArray').controls; let i = index" [formGroupName]="i"
+            style="margin-bottom: 10px;display: inline-block; width: 95%">
+            <input formControlName="direction" class="form-control" type="text" style="display: inline-block"
+                [ngStyle]="{'width' : i == 0 ? '%100' : '95%' }">
+            <button (click)="deleteStep(i)" [ngStyle]="{'display' : i == 0 ? 'none'  : 'block'}" class="btn btn-danger"
+                style="float: right; padding-left: 14px; padding-right: 14px;">-</button>
+
+            <div *ngIf="!step.get('direction').valid && step.get('direction').touched" class="alert alert-danger"
+                role="alert" style="margin-top: 10px;">
+                Please enter Instruction(s).
+            </div>
+        </div>
+        <button (click)="addNewStep()" class="btn btn-success" style="float: right">+</button>
+    </div>
+    <hr>
+
+    <b>Ingredients</b>
+    <span style="color: red; display: inline-block;">*</span>
+    <div formArrayName="ingredientsArray" class="gorm-group">
+        <div *ngFor="let ingredient of newRecipeForm.get('ingredientsArray').controls; let i = index"
+            [formGroupName]="i" style="margin-bottom: 10px; display: inline-block; width: 95%;">
+            <input formControlName="newIngredient" class="form-control" type="text" style="display: inline-block;"
+                [ngStyle]="{'width': i == 0 ? '%100' : '95%'}">
+            <button (click)="deleteIngredient(i)" [ngStyle]="{'display' : i == 0 ? 'none' : 'block'}"
+                class="btn btn-danger" style="float: right; padding-left: 14px; padding-right: 14px">-</button>
+            <div *ngIf="!ingredient.get('newIngredient').valid && ingredient.get('newIngredient').touched"
+                class="alert alert-danger" role="alert" style="margin-top: 10px;">
+                Please enter Ingredient(s).
+            </div>
+        </div>
+        <button (click)="addNewIngredient()" class="btn btn-success" style="float: right;">+</button>
+    </div>
+    <hr>
+
+    <button [disabled]="!newRecipeForm.valid" type="submit" class="btn btn-primary">Save Recipe</button>
+</form>

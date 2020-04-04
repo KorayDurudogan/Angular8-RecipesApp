@@ -6,8 +6,8 @@ export class Recipe {
     public directions: string[];
     public ingredients: string[];
 
-    constructor(id: number, name: string, description: string, image_path: string, directions: string[], ingredients: string[]) {
-        this.id = id;
+    constructor(name: string, description: string, image_path: string, directions: string[], ingredients: string[]) {
+        this.id = Math.floor(Math.random() * 100) + 3;
         this.name = name;
         this.description = description;
         this.image_path = image_path;

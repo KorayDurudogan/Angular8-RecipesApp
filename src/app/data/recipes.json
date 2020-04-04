@@ -1,8 +1,7 @@
 [
     {
-        "id": 1,
         "name": "Thai Chicken Thig Bake",
-        "description" : "Super moist and super easy Thai-inspired sweet and spicy chicken. The secret is the foil wrapper!",
+        "description": "Super moist and super easy Thai-inspired sweet and spicy chicken. The secret is the foil wrapper!",
         "image_path": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F6558633.jpg&w=595&h=791.35&c=sc&poi=face&q=85",
         "directions": [
             "Combine soy sauce, brown sugar, peanut butter, hoisin sauce, ginger, garlic, and chile paste in a resealable container. Mix well. Stir in cornstarch. Add chicken to marinade, cover, and refrigerate for at least 30 minutes.",
@@ -24,9 +23,8 @@
         ]
     },
     {
-        "id": 2,
         "name": "Brown Sugar Banana Bread",
-        "description" : "Brown sugar and cinnamon add depth to this moist, sweet bread. The perfect present for friends and loved ones!",
+        "description": "Brown sugar and cinnamon add depth to this moist, sweet bread. The perfect present for friends and loved ones!",
         "image_path": "https://images.media-allrecipes.com/userphotos/560x315/451262.jpg",
         "directions": [
             "Preheat oven to 350 degrees F (175 degrees C). Grease a 9x5-inch loaf pan.",
@@ -48,9 +46,8 @@
         ]
     },
     {
-        "id": 3,
         "name": "Mexican Taco Meatloaf",
-        "description" : "My Mexican grandmother would use leftover corn tortilla chips in our meatloaf and everyone loved it! They all wanted seconds along with the recipe. A delicious Mexican-American comfort food.",
+        "description": "My Mexican grandmother would use leftover corn tortilla chips in our meatloaf and everyone loved it! They all wanted seconds along with the recipe. A delicious Mexican-American comfort food.",
         "image_path": "https://images.media-allrecipes.com/userphotos/560x315/7245693.jpg",
         "directions": [
             "Preheat the oven to 350 degrees F (175 degrees C).",
