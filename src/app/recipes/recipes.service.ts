@@ -39,4 +39,10 @@ export class RecipesService {
     this.recipes = this.recipes.filter(r => r.id != id);
     this.recipesChanged.next(this.recipes);
   }
+
+  updateRecipe(recipe: Recipe) {
+    let recipeIndex = this.recipes.findIndex(r => r.id == recipe.id);
+    this.recipes[recipeIndex] = recipe;
+    this.recipesChanged.next(this.recipes);
+  }
 }

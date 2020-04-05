@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Recipe } from '../recipe.model';
 import { RecipesService } from '../recipes.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-recipe',
@@ -12,33 +12,63 @@ import { Router } from '@angular/router';
 })
 export class NewRecipeComponent implements OnInit {
 
+  isEditModeOn = false;
+  recipe: Recipe;
+
   newRecipeForm: FormGroup
 
   defaultImage = 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101065/112815953-stock-vector-no-image-available-icon-flat-vector.jpg?ver=6';
 
-  constructor(private formBuilder: FormBuilder, private recipeService: RecipesService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private recipeService: RecipesService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.createForm();
+    const id: number = +this.route.snapshot.params['id'];
+    if (id) {
+      this.isEditModeOn = true;
+      this.recipe = this.recipeService.fetchRecipe(id);
+    }
+    this.createRecipeForm();
   }
 
-  createForm() {
+  createRecipeForm() {
     this.newRecipeForm = new FormGroup({
-      recipeNameContainer: new FormGroup({ recipeName: new FormControl('', [Validators.required]) }),
-      recipeDescriptionContainer: new FormGroup({ recipeDescription: new FormControl() }),
-      recipeImagePath: new FormGroup({ imagePath: new FormControl(this.defaultImage) }),
-      directionsArray: this.formBuilder.array([this.createDirectionsFormGroup()]),
-      ingredientsArray: this.formBuilder.array([this.createIngredientsFormGroup()])
+      recipeNameContainer: new FormGroup({ recipeName: new FormControl(this.isEditModeOn ? this.recipe.name : '', [Validators.required]) }),
+      recipeDescriptionContainer: new FormGroup({ recipeDescription: new FormControl(this.isEditModeOn ? this.recipe.description : '') }),
+      recipeImagePath: new FormGroup({ imagePath: new FormControl(this.isEditModeOn ? this.recipe.image_path : this.defaultImage) }),
+      directionsArray: this.formBuilder.array(this.isEditModeOn ? this.createEditDirectionsFormGroup() : [this.createNewDirectionsFormGroup()]),
+      ingredientsArray: this.formBuilder.array(this.isEditModeOn ? this.createEditIngredientsFormGroup() : [this.createNewIngredientsFormGroup()])
     });
   }
 
-  createDirectionsFormGroup() {
+  createEditDirectionsFormGroup() {
+    let formGroupArr: FormGroup[] = [];
+    this.recipe.directions.forEach(step => {
+      let formGroup = new FormGroup({});
+      formGroup.addControl('direction', new FormControl(step, [Validators.required]));
+      formGroupArr.push(formGroup);
+    });
+
+    return formGroupArr;
+  }
+
+  createEditIngredientsFormGroup() {
+    let formGroupArr: FormGroup[] = [];
+    this.recipe.ingredients.forEach(ingredient => {
+      let formGroup = new FormGroup({});
+      formGroup.addControl('newIngredient', new FormControl(ingredient, [Validators.required]));
+      formGroupArr.push(formGroup);
+    });
+
+    return formGroupArr;
+  }
+
+  createNewDirectionsFormGroup() {
     return new FormGroup({
       direction: new FormControl('', [Validators.required])
     });
   }
 
-  createIngredientsFormGroup() {
+  createNewIngredientsFormGroup() {
     return new FormGroup({
       newIngredient: new FormControl('', [Validators.required])
     })
@@ -54,7 +84,7 @@ export class NewRecipeComponent implements OnInit {
 
   addNewStep() {
     let directionsArray = this.newRecipeForm.get('directionsArray') as FormArray;
-    let formGroup = this.createDirectionsFormGroup();
+    let formGroup = this.createNewDirectionsFormGroup();
     formGroup.addControl('deleteStep', new FormControl());
 
     directionsArray.push(formGroup);
@@ -85,9 +115,17 @@ export class NewRecipeComponent implements OnInit {
       let imagePath = this.newRecipeForm.value.recipeImagePath.imagePath;
       imagePath = imagePath != "" ? imagePath : this.defaultImage;
 
-      let recipe: Recipe = new Recipe(recipeName, recipeDescription, imagePath, instructions, ingredients);
-      this.recipeService.addRecipe(recipe);
-      this.router.navigate(['recipes']);
+      let newRecipe: Recipe = new Recipe(recipeName, recipeDescription, imagePath, instructions, ingredients);
+
+      if (this.isEditModeOn) {
+        newRecipe.id = this.recipe.id;
+        this.recipeService.updateRecipe(newRecipe);
+        this.router.navigate(['recipes/' + this.recipe.id]);
+      }
+      else {
+        this.recipeService.addRecipe(newRecipe);
+        this.router.navigate(['recipes']);
+      }
     }
   }
 }
