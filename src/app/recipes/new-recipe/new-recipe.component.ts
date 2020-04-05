@@ -40,6 +40,21 @@ export class NewRecipeComponent implements OnInit {
     });
   }
 
+  //#region functions that only for creating new recipe.
+  createNewDirectionsFormGroup() {
+    return new FormGroup({
+      direction: new FormControl('', [Validators.required])
+    });
+  }
+
+  createNewIngredientsFormGroup() {
+    return new FormGroup({
+      newIngredient: new FormControl('', [Validators.required])
+    })
+  }
+  //#endregion
+
+  //#region functions that only for editing a recipe.
   createEditDirectionsFormGroup() {
     let formGroupArr: FormGroup[] = [];
     this.recipe.directions.forEach(step => {
@@ -61,22 +76,11 @@ export class NewRecipeComponent implements OnInit {
 
     return formGroupArr;
   }
-
-  createNewDirectionsFormGroup() {
-    return new FormGroup({
-      direction: new FormControl('', [Validators.required])
-    });
-  }
-
-  createNewIngredientsFormGroup() {
-    return new FormGroup({
-      newIngredient: new FormControl('', [Validators.required])
-    })
-  }
+  //#endregion
 
   addNewIngredient() {
     let ingredientsArray = this.newRecipeForm.get('ingredientsArray') as FormArray;
-    let formGroup = this.createIngredientsFormGroup();
+    let formGroup = this.createNewIngredientsFormGroup();
     formGroup.addControl('deleteIngredient', new FormControl());
 
     ingredientsArray.push(formGroup);
