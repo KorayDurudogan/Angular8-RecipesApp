@@ -20,8 +20,8 @@ export class RecipesDetailComponent implements OnInit {
     this.recipe = this.recipeService.fetchRecipe(id);
   }
 
-  deleteRecipe(i: number) {
-    this.recipeService.deleteRecipe(i);
+  deleteRecipe() {
+    this.recipeService.deleteRecipe(this.recipe.id);
     this.router.navigate(['recipes']);
   }
 }

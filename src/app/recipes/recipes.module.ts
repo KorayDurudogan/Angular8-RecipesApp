@@ -12,6 +12,7 @@ import { DirectionsComponent } from './recipes-detail/directions/directions.comp
 import { IngredientsComponent } from './recipes-detail/ingredients/ingredients.component';
 import { NewRecipeComponent } from './new-recipe/new-recipe.component';
 import { RecipesService } from './recipes.service';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { RecipesService } from './recipes.service';
   imports: [
     CommonModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   providers: [RecipesService]
 })
